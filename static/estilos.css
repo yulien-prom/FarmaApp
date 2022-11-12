@@ -1,0 +1,74 @@
+body  { 
+	background-color: #F3F3F3;
+	font-family: Arial, Sans-serif;
+	font-size: 16px;
+}
+
+/* Color de fondo y sin bordes para navbar */
+.navbar {
+	background-color: #C35F52;
+	border: 0 solid white;
+}
+
+/* Colores de los links del navbar */
+.navbar-brand, ul.nav li a { color: white !important; }
+
+/* Color del link seleccionado */
+ul .active { background-color: #333333 !important; }
+
+/* Título principal del sitio */
+.navbar-brand:hover, ul.nav li a:hover {
+	background-color: #333333 !important;
+	color: white;
+}
+
+/* Fondo del boton de usuario al estar activo: */
+.navbar-default .navbar-nav>.open>a:focus {	background-color: #333333; }
+
+/* Color de fondo del menu que sale al presionar el boton de usuario: */
+.navbar-nav > li > .dropdown-menu { background-color: #C35F52; }
+
+.caja {
+	background-color: #FFFFFF;
+	padding: 40px;
+	padding-top: 10px;
+}
+
+.titulo {
+	font-size: 30px !important;
+	font-weight: bold !important;
+}
+
+.subtitulo {
+	margin-top: 0;
+	font-size: 16px !important;
+	font-weight: lighter !important;
+	padding-bottom: 10px;
+}
+
+b {	color: #242424; }
+
+#logo {
+	display: inline;
+	clear: both;
+	margin-right: 0;
+	margin-top: -2px;
+}
+
+.logo-user {
+	display: inline-block;
+	background-size: cover;
+}
+
+.resaltado {
+	font-weight: bolder;
+	color: snow;
+	background-color: #242424;;
+}
+
+.letra-chica { font-size: 10px; }
+
+.letra-grande { font-size: 20px; }
+
+/* Botones de guardar resultados en csv */
+.btn-block { border-radius: 0 !important; }

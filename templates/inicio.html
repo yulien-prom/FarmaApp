@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ super() }} Login
+{% endblock title %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-md-5 col-xs-12 caja">
+		{% if error: %}
+			<h4><span class="label label-danger">{{ error|safe }}</span>&nbsp;</h4>
+		{% endif %}
+
+		{% with mensaje_info = get_flashed_messages() %}
+			{% if mensaje_info: %}
+				<h4><span class="label label-success">{{ mensaje_info[0] }}</span>&nbsp;</h4>
+			{% endif %}
+		{% endwith %}
+
+		<h1 class="titulo">¿Sos usuario?</h1>
+		<h2 class="subtitulo"><i>Ingresá tus datos para entrar al sitio</i>:</h2>
+		<form method="POST">
+			<div class="form-group">
+				{{ login.csrf_token }}
+
+				{{ login.usuario(class_="form-control input-lg",
+								autofocus=true,
+								required="",
+								placeholder="Usuario",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+								
+				{{ login.clave(class_="form-control input-lg",
+								required="",
+								placeholder="Clave",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+				<br>
+				{{ login.submit(class_="btn btn-default btn-lg",
+								value="Ingresar") }}
+			</div>
+		</form>
+	</div>
+
+</div>
+{% endblock page_content %}
+
+<!-- FIN Inicio -->

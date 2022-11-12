@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ super() }} Clientes por Producto
+{% endblock title %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-xs-12 caja">
+		{% if mensaje: %}
+			<h4><span class="label label-success">{{ mensaje|safe }}</span></h4>
+		{% endif %}
+
+		<h1 class="titulo">Clientes <span class="text-danger">por producto</span>:</h1>
+		
+		{% if error: %}
+			<h4><span class="label label-danger">{{ error }}</span></h4>
+		{% endif %}
+		
+		<form method="POST" class="form-inline">
+		<div class="form-group">
+		{{ busqueda_cxp.csrf_token }}
+		
+		{{ busqueda_cxp.buscar(list="productos",
+						class_="form-control",
+						autofocus=true,
+						required="",
+						autocomplete="off",
+						placeholder="Ingrese producto",
+						pattern=".{3,}",
+						title="Ingrese 3 o más caracteres",
+						size=25,
+						maxlength=25) }}
+
+		<datalist id="productos">
+			{% for fila in sugerencias %}
+			<option value="{{ fila }}">{{ fila }}</option>
+			{% endfor %}
+		</datalist>
+
+		{{ busqueda_cxp.submit(class_="btn btn-default",
+						value="Buscar") }}
+		</div>
+		</form>
+
+		{% if resultados: %}
+		<br>
+		<p><i>Mostrando resultados</i>:</p>
+
+		<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			{% for linea in resultados: %}
+
+				{# Primera Fila #}
+				{% if loop.index == 1: %}
+					<tr>
+					<th>#</th>
+					{% for campo in linea: %}
+						{% if loop.index0 == columnas[1]: %}
+							<th><span class="text-danger">{{ campo }}</span></th>
+						{% elif campo == 'CANTIDAD' %}
+							<th>{{ campo }} (un.)</th>
+						{% elif campo == 'PRECIO' %}
+							<th>{{ campo }} ($)</th>
+						{% else: %}
+							<th>{{ campo }}</th>
+						{% endif %}	
+					{% endfor %}
+					</tr>
+
+				{# Filas de datos #}
+				{% else: %}
+					<tr>
+					<th>{{ loop.index0 }}</th>
+					{% for campo in linea: %}
+						{% if loop.index0 == columnas[0]: %}
+							<td><b>{{ campo }}</b></td>
+						{% elif loop.index0 == columnas[1]: %}
+							<td><b class="text-danger">{{ campo }}</b></td>
+						{% else: %}
+							<td>{{ campo }}</td>
+						{% endif %}
+					{% endfor %}
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+		</div>
+		
+		<br>
+			{% if bajar: %}
+			<form method="POST" style="display: inline;">
+				{{ bajar.csrf_token }}
+
+				{{ bajar.submit(class_="btn btn-lg btn-block btn-danger",
+								value="Descargar resultados en formato CSV") }}
+			</form>
+			{% endif %}
+		{% endif %}
+		
+	</div>
+</div>
+{% endblock page_content%}
+
+{# FIN #}

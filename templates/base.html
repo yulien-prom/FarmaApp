@@ -1,0 +1,116 @@
+{% extends "bootstrap/base.html" %}
+
+<!-- Head -->
+{% block html_attribs %} lang="es" {% endblock html_attribs %}
+
+{% block head %}
+{{ super() }}
+<link href="{{ url_for('static', filename='estilos.css') }}" rel="stylesheet">
+<link rel="shortcut icon" href="{{ url_for('static', filename = 'imagenes/icono.png') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename = 'imagenes/icono.png') }}" type="image/x-icon">
+
+{# Agrego el siguiente script en 'head' para solucionar el problema FOUC que tenia el sitio. #}
+{# De por si no hace gran cosa, pero soluciona misteriosamente el problema. #}
+{# https://en.wikipedia.org/wiki/Flash_of_unstyled_content #}
+
+<script type="text/javascript">
+	document.documentElement.className = 'no-fouc';
+</script>
+
+{% endblock head %}
+
+{% block title %} FarmaApp- {% endblock title %}
+
+<!-- Pagina -->
+{% block navbar %}
+<nav class="navbar navbar-default navbar-static-top">
+	<div class="container-fluid">
+
+		{# ---------------------------------------- #}
+		{# SI existe una sesión de usuario abierta: #}
+
+		{% if session["user"]: %}
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+
+			<a class="navbar-brand">
+				<img id="logo" alt="logo" src="{{ url_for("static", filename = "imagenes/icono.png") }}" />
+				<strong>FarmaApp</strong>
+			</a>
+		</div>
+
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a {% if usuario %} class="active" {% endif %} href="/usuario" active><strong>Inicio</strong></a></li>
+				<li><a {% if busqueda_pxc %} class="active" {% endif %} {% if not session["error_csv"] %} href="/clientes" {% endif %}>Productos <strong>por cliente</strong></a></li>
+				<li><a {% if busqueda_cxp %} class="active" {% endif %} {% if not session["error_csv"] %} href="/productos" {% endif %}>Clientes <strong>por productos</strong></a></li>
+				<li><a {% if traer_pmv %} class="active" {% endif %} {% if not session["error_csv"] %} href="/masvendidos" {% endif %}>Productos <strong>más vendidos</strong></a></li>
+				<li><a {% if traer_cmg %} class="active" {% endif %} {% if not session["error_csv"] %} href="/masgastaron" {% endif %}>Clientes que <strong>más gastaron</strong></a></li>
+			</ul>
+
+			<ul class="nav navbar-right navbar-nav">
+				<li class="dropdown" />
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					{% if session["user"] == "admin": %}
+						<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					{% else: %}
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+					{% endif %}
+					{{ session["user"] }}&nbsp
+						<span class="caret"></span>
+					</a>
+
+				<ul class="dropdown-menu">
+					<li><a href="/clave">Cambiar clave</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="/salir">Salir</a></li>
+				</ul>
+			</ul>
+		</div>
+		{# ------------------------------------------- #}
+
+		{# ------------------------------------------- #}
+		{# Si NO existe una sesión de usuario abierta: #}
+
+		{% else: %}
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+
+			<a class="navbar-brand">
+				<img id="logo" alt="logo" src="{{ url_for("static", filename = "imagenes/icono.png") }}" />
+				<strong>FarmaApp</strong>
+			</a>
+		</div>
+
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a {% if login %} class="active" {% endif %} href="/">Login</a></li>
+				<li><a {% if registro %} class="active" {% endif %} href="/registrarse">Registrarse</a></li>
+			</ul>
+		</div>
+		{# ------------------------------------------- #}
+		{% endif %}
+	</div>
+</nav>
+{% endblock navbar %}
+
+
+{% block content %}
+<div class="container">
+	<br>
+	{% block page_content %}{% endblock %}
+	<br><br>
+</div>
+{% endblock content %}
+
+<!-- FIN Base -->

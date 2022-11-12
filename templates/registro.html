@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ super() }} Registrarse
+{% endblock title %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-md-5 col-xs-12 caja">
+		{% if error: %}
+			<h4><span class="label label-danger">{{ error|safe }}</span>&nbsp;</h4>
+		{% endif %}
+
+		{% with mensaje_info = get_flashed_messages() %}
+			{% if mensaje_info: %}
+				<h4><span class="label label-info">{{ mensaje_info[0] }}</span>&nbsp;</h4>
+			{% endif %}
+		{% endwith %}
+
+		<h1 class="titulo">¿Usuario nuevo?</h1>
+		<h2 class="subtitulo"><i>Completá el siguiente formulario para registrarte</i>:</h2>
+		<form method="POST">
+			<div class="form-group">
+				{{ registro.csrf_token }}
+
+				{{ registro.usuario(class_="form-control input-lg",
+								autofocus=true,
+								required="",
+								placeholder="Usuario",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+								
+				{{ registro.clave(class_="form-control input-lg",
+								required="",
+								placeholder="Contraseña",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+
+				{{ registro.repetir_clave(class_="form-control input-lg",
+								required="",
+								placeholder="Repetir contraseña",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+
+				<br>
+				{{ registro.submit(class_="btn btn-default btn-lg",
+								value="Registrar") }}
+			</div>
+		</form>
+	</div>
+
+</div>
+{% endblock page_content %}
+
+<!-- FIN Inicio -->

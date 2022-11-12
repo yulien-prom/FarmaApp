@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ super() }} Productos más vendidos
+{% endblock title %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-xs-12 caja">
+		{% if mensaje: %}
+			<h4><span class="label label-success">{{ mensaje|safe }}</span></h4>
+		{% endif %}
+
+		{% if error: %}
+			<h4><span class="label label-danger">{{ error }}</span></h4>
+		{% endif %}
+		
+		<h1 class="titulo">Productos <span class="text-danger">más vendidos</span>:</h1>
+
+		<form method="POST" class="form-inline">
+		<div class="form-group">
+		{{ traer_pmv.csrf_token }}
+		
+		{{ traer_pmv.buscar(class_="form-control",
+						autofocus=true,
+						required="",
+						placeholder="Ingrese cantidad (ej: 10):",
+						pattern="[1-9][0-9]{0,}",
+						title="Ingrese 1 o más números",
+						size=20,
+						maxlength=6) }}
+
+		{{ traer_pmv.submit(class_="btn btn-default",
+						value="Traer") }}
+		</div>
+		</form>
+
+		{% if resultados: %}
+		<br>
+		<p><i>Mostrando los productos más vendidos por cantidad</i>:</p>
+
+		<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			<tr>
+			<th>#</th>
+			<th>PRODUCTOS</th>
+			<th class="text-danger">CANTIDADES</th>	
+			</tr>
+			{% for linea in resultados: %}
+				<tr>
+				<th>{{ loop.index }}°</th>
+				{% for campo in linea: %}
+					{% if loop.index == 2: %}
+						<td><b class="text-danger letra-grande">{{ campo }}</b> <span class="letra-chica">un.</span></td>
+					{% else: %}
+						<td>{{ campo }}</td>
+					{% endif %}
+				{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+		</div>
+		
+		<br>
+			{% if bajar: %}
+			<form method="POST" style="display: inline;">
+				{{ bajar.csrf_token }}
+
+				{{ bajar.submit(class_="btn btn-lg btn-block btn-danger",
+								value="Descargar resultados en formato CSV") }}
+			</form>
+			{% endif %}
+		{% endif %}
+		
+	</div>
+</div>
+{% endblock page_content%}
+
+{# FIN #}

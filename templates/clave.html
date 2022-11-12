@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ super() }} Cambio clave
+{% endblock title %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-md-5 col-xs-12 caja">
+		{% if error: %}
+			<h4><span class="label label-danger">{{ error|safe }}</span>&nbsp;</h4>
+		{% endif %}
+
+		{% if mensaje: %}
+			<h4><span class="label label-success">{{ mensaje }}</span>&nbsp;</h4>
+		{% endif %}
+
+		<h1 class="titulo">Cambio de clave</h1>
+		<h2 class="subtitulo"><i>Confirmá tu clave actual</i>:</h2>
+		<form method="POST">
+			<div class="form-group">
+				{{ cambio.csrf_token }}
+
+				{{ cambio.vieja_clave(class_="form-control input-lg",
+								autofocus=true,
+								required="",
+								placeholder="Clave actual",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+
+				<br>
+				<h2 class="subtitulo"><i>Ingresá ahora la nueva clave</i>:</h2>
+								
+				{{ cambio.nueva_clave(class_="form-control input-lg",
+								required="",
+								placeholder="Nueva clave",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+
+				{{ cambio.confirmar_nueva_clave(class_="form-control input-lg",
+								required="",
+								placeholder="Confirmar nueva clave",
+								size=15,
+								maxlength=15,
+								pattern=".{3,}",
+								title="3 caracteres mínimo") }}
+				<br>
+				{{ cambio.submit(class_="btn btn-default btn-lg",
+								value="Cambiar") }}
+			</div>
+		</form>
+	</div>
+
+</div>
+{% endblock page_content %}
+
+<!-- FIN Inicio -->

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ super() }} Usuario {{ session["user"] }}
+{% endblock title %}
+
+{% block page_content %}
+<div class="row">
+	<div class="col-xs-12 caja">
+
+		{# SI hubo errores durante la validación del CSV... #}
+
+		{% if error: %}
+		<h4><span class="label label-danger">{{ error }}</span></h4>
+		<h1 class="titulo">Opss.</h1>
+		<p>Va a ser necesario corregir estos errores si se quiere continuar con las consultas</p>
+		<p>(los links a éstas mismas estarán presentes pero desactivados).</p>
+		<br>
+		<p><i>Mostrando mensajes de <b>error.log</b></i>:</p>
+
+		<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			<tr>
+			<th>N° LINEA</th>
+			<th>MENSAJE</th>
+			<th>CAMPO</th>
+			</tr>
+			
+			{% for linea in mensajes_error: %}
+				<tr>
+				{% for campo in linea: %}
+					<td>{{ campo }}</td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+		</div>
+		<br>
+
+		{% else: %}
+		{# Si en cambio la validación del CSV fue correcta... #}
+
+		<h1 class="titulo">Hola {{ session["user"] }}!</h1>
+		<p><i>Mostrando las últimas {{ cantidad }} ventas (o las únicas disponibles)</i>:</p>
+		<br>
+
+		<div class="table-responsive">
+		<table class="table table-hover table-striped">
+			{% for linea in resultados: %}
+
+				{# Primera Fila #}
+				{% if loop.index == 1: %}
+					<tr>
+					<th>#</th>
+					{% for campo in linea: %}
+						{% if campo == 'CANTIDAD' %}
+							<th>{{ campo }} (un.)</th>
+						{% elif campo == 'PRECIO' %}
+							<th>{{ campo }} ($)</th>
+						{% else %}
+							<th>{{ campo }}</th>
+						{% endif %}
+					{% endfor %}
+					</tr>
+
+				{# Filas de datos #}
+				{% else: %}
+					<tr>
+					<th>{{ nro_filas + loop.index }}</th>
+					{% for campo in linea: %}
+						<td>{{ campo }}</td>
+					{% endfor %}
+					</tr>
+				{% endif %}
+
+			{% endfor %}
+		</table>
+		</div>
+		
+		{% endif %}
+		
+	</div>
+</div>
+{% endblock page_content %}
+
+{# FIN #}
